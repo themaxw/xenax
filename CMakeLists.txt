@@ -20,6 +20,9 @@ endif()
 
 set(BOOST_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/modules/boost/libs)
 
+# TODO change this to a installation dir
+target_compile_definitions(xenax PRIVATE STATIC_FILE_DIR="${PROJECT_SOURCE_DIR}/static/")
+
 target_include_directories(xenax
     SYSTEM PRIVATE
     ${BOOST_LOCATION}/align/include/

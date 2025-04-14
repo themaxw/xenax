@@ -126,13 +126,14 @@ int main(){
 
     std::cout << "serving on " << server.getHTTPAddress() << std::endl;
 
-    std::string target_addr = "127.0.0.1";
 
     // overwrite target addr with environment var if necessary
-    char* target_addr_pointer = std::getenv("XENAX_WEBVIEW_TARGET");
-    if (target_addr_pointer != nullptr) target_addr = target_addr_pointer;
 
-    std::string webview_addr = "http://" + target_addr +  ":" +  std::to_string(server.getPort());
+    std::string webview_addr = "http://127.0.0.1:" +  std::to_string(server.getPort());
+
+
+    char* webview_addr_env = std::getenv("XENAX_WEBVIEW_TARGET");
+    if (webview_addr_env != nullptr) webview_addr = webview_addr_env;
 
     std::cout << "pointing webview to " << webview_addr << std::endl;
     CHOC_ASSERT( webview.navigate( webview_addr ));

@@ -1,0 +1,1 @@
+html,body{margin:0!important;padding:0!important;overflow:hidden;background-color:#000}#coords{color:#0ff;position:absolute;z-index:-1}#log{height:200px;width:600px;position:absolute;z-index:2;overflow:scroll;color:#fff}canvas{width:100%;height:100%;display:block;background-color:#00000050}

@@ -87,29 +87,47 @@ int main(){
 
     choc::ui::setWindowsDPIAwareness(); // For Windows, we need to tell the OS we're high-DPI-aware
 
-    choc::ui::DesktopWindow window ({ 100, 100, 600, 600 });
+    // create windows
+    choc::ui::DesktopWindow window_left ({ 100, 100, 600, 600 });
 
-    window.setWindowTitle ("Hello");
-    window.setResizable (true);
-    window.setMinimumSize (300, 300);
+    window_left.setWindowTitle ("Xenax Left");
+    window_left.setResizable (true);
+    window_left.setMinimumSize (300, 300);
     // window.setMaximumSize (600, 600);
-    window.windowClosed = [] {
+    window_left.windowClosed = [] {
         running.store(false);
         choc::messageloop::stop();
     };
 
-    choc::ui::WebView webview;
+    choc::ui::DesktopWindow window_right ({ 100, 100, 600, 600 });
 
-    CHOC_ASSERT (webview.loadedOK());
+    window_right.setWindowTitle ("Xenax Right");
+    window_right.setResizable (true);
+    window_right.setMinimumSize (300, 300);
+    // window.setMaximumSize (600, 600);
+    window_right.windowClosed = [] {
+        running.store(false);
+        choc::messageloop::stop();
+    };
+
+    // create webviews
+    choc::ui::WebView webview_left;    
+    choc::ui::WebView webview_right;
+
+
+    CHOC_ASSERT (webview_left.loadedOK());
+    CHOC_ASSERT (webview_right.loadedOK());
 
     std::string address = "0.0.0.0";
     uint16_t preferredPortNum = 10101;
 
-    window.setContent (webview.getViewHandle());
-    CHOC_ASSERT(server.open(
+    window_left.setContent (webview_left.getViewHandle());    
+    window_right.setContent (webview_right.getViewHandle());
+
+    server.open(
         address,
         preferredPortNum,
-        0,
+        1,
         [&clients] () -> std::shared_ptr<ExampleClientInstance>
         {
             auto new_client = std::make_shared<ExampleClientInstance>();
@@ -122,8 +140,11 @@ int main(){
             std::cout << "Error from webserver: " << error << std::endl;
         }
 
-    ))
+    );
 
+    if(!server.isOpen()){
+        std::cout << "ERROR: Server is not open" << std::endl;
+    }
     std::cout << "serving on " << server.getHTTPAddress() << std::endl;
 
 
@@ -136,10 +157,14 @@ int main(){
     if (webview_addr_env != nullptr) webview_addr = webview_addr_env;
 
     std::cout << "pointing webview to " << webview_addr << std::endl;
-    CHOC_ASSERT( webview.navigate( webview_addr ));
+    
+    webview_left.navigate( webview_addr );
+    webview_right.navigate( webview_addr );
 
 
-    window.toFront();
+    window_left.toFront();    
+    window_right.toFront();
+
     
 
     // std::cout << "Starting hellos from server" << std::endl;

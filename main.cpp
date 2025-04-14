@@ -124,13 +124,18 @@ int main(){
 
     ))
 
+    std::cout << "serving on " << server.getHTTPAddress() << std::endl;
+    
+    // TODO make wiebview addr configurable from command line for debug mode with external website
+    std::string webview_addr = "http://127.0.0.1:" +  std::to_string(server.getPort());
 
-    CHOC_ASSERT( webview.navigate( server.getHTTPAddress() ));
+    std::cout << "pointing webview to " << webview_addr << std::endl;
+    CHOC_ASSERT( webview.navigate( webview_addr ));
 
 
     window.toFront();
 
-    std::cout << "Starting hellos from server" << std::endl;
+    // std::cout << "Starting hellos from server" << std::endl;
 
     // std::thread serverThread([&clients] {
     //     test_websocket(clients);

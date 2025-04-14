@@ -103,7 +103,7 @@ int main(){
     CHOC_ASSERT (webview.loadedOK());
 
     std::string address = "0.0.0.0";
-    uint16_t preferredPortNum = 8080;
+    uint16_t preferredPortNum = 10101;
 
     window.setContent (webview.getViewHandle());
     CHOC_ASSERT(server.open(
@@ -125,7 +125,7 @@ int main(){
     ))
 
 
-    webview.navigate( server.getHTTPAddress() );
+    CHOC_ASSERT( webview.navigate( server.getHTTPAddress() ));
 
 
     window.toFront();

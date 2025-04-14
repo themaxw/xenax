@@ -102,7 +102,7 @@ int main(){
 
     CHOC_ASSERT (webview.loadedOK());
 
-    std::string address = "127.0.0.1";
+    std::string address = "0.0.0.0";
     uint16_t preferredPortNum = 8080;
 
     window.setContent (webview.getViewHandle());

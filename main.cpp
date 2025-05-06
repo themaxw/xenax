@@ -37,7 +37,7 @@ struct ExampleClientInstance  : public choc::network::HTTPServer::ClientInstance
     choc::network::HTTPContent getHTTPContent (std::string_view path) override
     {
         // This path is asking for the default page content
-        if (path == "/"){
+        if (path.starts_with("/?") || path == "/"){
             return choc::network::HTTPContent::forFile(HTML_FILE);
         } else if (path == "/assets/index.css") {
             auto resp = choc::network::HTTPContent::forFile(CSS_FILE);
@@ -119,7 +119,7 @@ int main(){
     CHOC_ASSERT (webview_right.loadedOK());
 
     std::string address = "0.0.0.0";
-    uint16_t preferredPortNum = 10101;
+    uint16_t preferredPortNum = 8080;
 
     window_left.setContent (webview_left.getViewHandle());    
     window_right.setContent (webview_right.getViewHandle());

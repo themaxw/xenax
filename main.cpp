@@ -87,17 +87,6 @@ int main(){
 
     choc::ui::setWindowsDPIAwareness(); // For Windows, we need to tell the OS we're high-DPI-aware
 
-    // create windows
-    choc::ui::DesktopWindow window_left ({ 100, 100, 600, 600 });
-
-    window_left.setWindowTitle ("Xenax Left");
-    window_left.setResizable (true);
-    window_left.setMinimumSize (300, 300);
-    // window.setMaximumSize (600, 600);
-    window_left.windowClosed = [] {
-        running.store(false);
-        choc::messageloop::stop();
-    };
 
     choc::ui::DesktopWindow window_right ({ 100, 100, 600, 600 });
 
@@ -111,17 +100,14 @@ int main(){
     };
 
     // create webviews
-    choc::ui::WebView webview_left;    
     choc::ui::WebView webview_right;
 
 
-    CHOC_ASSERT (webview_left.loadedOK());
     CHOC_ASSERT (webview_right.loadedOK());
 
     std::string address = "0.0.0.0";
     uint16_t preferredPortNum = 8080;
 
-    window_left.setContent (webview_left.getViewHandle());    
     window_right.setContent (webview_right.getViewHandle());
 
     server.open(
@@ -150,7 +136,7 @@ int main(){
 
     // overwrite target addr with environment var if necessary
 
-    std::string webview_addr = "http://127.0.0.1:" +  std::to_string(server.getPort());
+    std::string webview_addr = "http://127.0.0.1:" +  std::to_string(server.getPort()) + "/?screen=1";
 
 
     char* webview_addr_env = std::getenv("XENAX_WEBVIEW_TARGET");
@@ -158,11 +144,9 @@ int main(){
 
     std::cout << "pointing webview to " << webview_addr << std::endl;
     
-    webview_left.navigate( webview_addr );
     webview_right.navigate( webview_addr );
 
 
-    window_left.toFront();    
     window_right.toFront();
 
     

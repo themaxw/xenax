@@ -1,29 +1,29 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(xenax)
+project(xenax-backend)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(xenax main.cpp)
+add_executable(xenax-backend main.cpp)
 
 # On OSX, need to add the WebKit framework for WebView functionality
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    target_link_libraries(xenax "-framework WebKit -framework CoreServices")
+    target_link_libraries(xenax-backend "-framework WebKit -framework CoreServices")
 endif()
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     find_package(PkgConfig REQUIRED)
     pkg_check_modules (gtk3 REQUIRED gtk+-3.0 IMPORTED_TARGET)
     pkg_check_modules (webkit2 REQUIRED webkit2gtk-4.1 IMPORTED_TARGET)
-    target_link_libraries (xenax PUBLIC pthread PkgConfig::gtk3 PkgConfig::webkit2)
+    target_link_libraries (xenax-backend PUBLIC pthread PkgConfig::gtk3 PkgConfig::webkit2)
 endif()
 
 set(BOOST_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/modules/boost/libs)
 
 # TODO change this to a installation dir
-target_compile_definitions(xenax PRIVATE STATIC_FILE_DIR="${PROJECT_SOURCE_DIR}/static/")
+target_compile_definitions(xenax-backend PRIVATE STATIC_FILE_DIR="${PROJECT_SOURCE_DIR}/static/")
 
-target_include_directories(xenax
+target_include_directories(xenax-backend
     SYSTEM PRIVATE
     ${BOOST_LOCATION}/align/include/
     ${BOOST_LOCATION}/asio/include/
